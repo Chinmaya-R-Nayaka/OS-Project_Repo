@@ -1,0 +1,26 @@
+
+Project Title: xv6 Custom System Calls
+
+Team Members:
+1. Chinmaya R Nayaka
+2.
+3.
+4. 
+5. 
+6. 
+
+
+System Calls Implemented:
+1. getprocinfo()
+
+
+Description:
+This project implements custom system calls in the xv6 operating system
+
+1. getprocinfo() --> System Call
+	The getprocinfo() system call is implemented in the xv6 operating system to retrieve information about 
+currently active processes. It accesses the kernel’s process table and displays details such as the Process ID (PID)
+and the state of each process. This system call demonstrates how user programs interact with the Kernel to obtain 
+system level information. The System Call is invoked from user program and executed in kenel through 
+function sys_getprocinfo()
+
