@@ -23,3 +23,4 @@
 
 #define SYS_hello 23
 #define SYS_getprocinfo 24
+#define SYS_getyear  25

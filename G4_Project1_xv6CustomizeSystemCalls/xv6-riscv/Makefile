@@ -148,6 +148,7 @@ UPROGS=\
 	$U/_dorphan\
 	$U/_testhello\
 	$U/_testproc\
+        $U/_year_test\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

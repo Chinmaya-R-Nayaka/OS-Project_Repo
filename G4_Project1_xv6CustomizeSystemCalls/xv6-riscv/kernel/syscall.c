@@ -104,7 +104,7 @@ extern uint64 sys_close(void);
 
 extern uint64 sys_hello(void);
 extern uint64 sys_getprocinfo(void);
-
+extern uint64 sys_getyear(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -133,6 +133,7 @@ static uint64 (*syscalls[])(void) = {
 
 [SYS_hello] sys_hello,
 [SYS_getprocinfo] sys_getprocinfo,
+[SYS_getyear]    sys_getyear,
 };
 
 void

@@ -27,7 +27,7 @@ int uptime(void);
 
 int hello(void);
 int getprocinfo(void);
-
+int getyear(void);
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
