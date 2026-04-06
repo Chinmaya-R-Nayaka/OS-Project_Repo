@@ -1,3 +1,4 @@
+
 K=kernel
 U=user
 
@@ -149,7 +150,9 @@ UPROGS=\
 	$U/_testhello\
 	$U/_testproc\
         $U/_year_test\
-        $U/_shmtest
+	$U/_msgtest\
+        $U/_shmtest       
+
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
 
@@ -197,3 +200,4 @@ check-qemu-version:
 		echo "ERROR: Need qemu version >= $(MIN_QEMU_VERSION)"; \
 		exit 1; \
 	fi
+

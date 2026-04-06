@@ -1,3 +1,4 @@
+
 #include "types.h"
 #include "param.h"
 #include "memlayout.h"
@@ -105,7 +106,15 @@ extern uint64 sys_close(void);
 extern uint64 sys_hello(void);
 extern uint64 sys_getprocinfo(void);
 extern uint64 sys_getyear(void);
-extern uint64 sys_shmget(void);extern uint64 sys_shmat(void);
+extern uint64 sys_shmget(void);
+extern uint64 sys_shmat(void);
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Forward declarations so the syscall dispatcher can reach our IPC handlers.
+extern uint64 sys_send(void);
+extern uint64 sys_recv(void);
+/* ----------------------------------------- */
+
+
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
 static uint64 (*syscalls[])(void) = {
@@ -130,10 +139,17 @@ static uint64 (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
-[SYS_shmget] sys_shmget,[SYS_shmat]  sys_shmat,
+
 [SYS_hello] sys_hello,
 [SYS_getprocinfo] sys_getprocinfo,
 [SYS_getyear]    sys_getyear,
+[SYS_shmget] sys_shmget,
+[SYS_shmat]  sys_shmat,
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Register the IPC system calls in the dispatch table.
+[SYS_send] sys_send,  // send a message to a target process's queue
+[SYS_recv] sys_recv,  // receive (dequeue) a message from own mailbox
+/* ----------------------------------------- */
 };
 
 void
@@ -153,3 +169,4 @@ syscall(void)
     p->trapframe->a0 = -1;
   }
 }
+

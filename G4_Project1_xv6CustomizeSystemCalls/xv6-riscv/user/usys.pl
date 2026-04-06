@@ -48,3 +48,9 @@ entry("getprocinfo");
 entry("getyear");
 entry("shmget");
 entry("shmat");
+# --- Bhanu's Work: Message Passing IPC ---
+# Generate assembly stubs so user programs can invoke the send/recv syscalls.
+entry("send");
+entry("recv");
+# -----------------------------------------
+

@@ -1,3 +1,4 @@
+
 // System call numbers
 #define SYS_fork    1
 #define SYS_exit    2
@@ -24,5 +25,14 @@
 #define SYS_hello 23
 #define SYS_getprocinfo 24
 #define SYS_getyear  25
-#define SYS_shmget 26
-#define SYS_shmat  27
+
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Syscall number for sending a message to another process's mailbox queue.
+#define SYS_send 26
+// Syscall number for receiving (dequeuing) a message from the calling process's mailbox.
+#define SYS_recv 27
+/* ----------------------------------------- */
+#define SYS_shmget 28
+#define SYS_shmat  29
+
+

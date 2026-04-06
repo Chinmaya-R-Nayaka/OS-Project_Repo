@@ -55,6 +55,10 @@ procinit(void)
       initlock(&p->lock, "proc");
       p->state = UNUSED;
       p->kstack = KSTACK((int) (p - proc));
+      /* --- Bhanu's Work: Message Passing IPC --- */
+      // Each process slot needs its own message queue lock initialized at boot.
+      initlock(&p->msglock, "msglock");
+      /* ----------------------------------------- */
   }
 }
 
@@ -146,6 +150,13 @@ found:
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
 
+  /* --- Bhanu's Work: Message Passing IPC --- */
+  // Initialize the message queue to empty for this freshly allocated process.
+  p->msg_count = 0;
+  p->msg_head  = 0;
+  p->msg_tail  = 0;
+  /* ----------------------------------------- */
+
   return p;
 }
 
@@ -169,6 +180,14 @@ freeproc(struct proc *p)
   p->killed = 0;
   p->xstate = 0;
   p->state = UNUSED;
+
+  /* --- Bhanu's Work: Message Passing IPC --- */
+  // Reset the message queue when a process is freed,
+  // so that a future process reusing this slot starts with an empty mailbox.
+  p->msg_count = 0;
+  p->msg_head  = 0;
+  p->msg_tail  = 0;
+  /* ----------------------------------------- */
 }
 
 // Create a user page table for a given process, with no user memory,
