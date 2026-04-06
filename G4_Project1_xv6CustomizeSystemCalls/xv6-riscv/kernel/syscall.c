@@ -106,6 +106,12 @@ extern uint64 sys_hello(void);
 extern uint64 sys_getprocinfo(void);
 extern uint64 sys_getyear(void);
 
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Forward declarations so the syscall dispatcher can reach our IPC handlers.
+extern uint64 sys_send(void);
+extern uint64 sys_recv(void);
+/* ----------------------------------------- */
+
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
 static uint64 (*syscalls[])(void) = {
@@ -134,6 +140,12 @@ static uint64 (*syscalls[])(void) = {
 [SYS_hello] sys_hello,
 [SYS_getprocinfo] sys_getprocinfo,
 [SYS_getyear]    sys_getyear,
+
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Register the IPC system calls in the dispatch table.
+[SYS_send] sys_send,  // send a message to a target process's queue
+[SYS_recv] sys_recv,  // receive (dequeue) a message from own mailbox
+/* ----------------------------------------- */
 };
 
 void

@@ -24,3 +24,10 @@
 #define SYS_hello 23
 #define SYS_getprocinfo 24
 #define SYS_getyear  25
+
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Syscall number for sending a message to another process's mailbox queue.
+#define SYS_send 26
+// Syscall number for receiving (dequeuing) a message from the calling process's mailbox.
+#define SYS_recv 27
+/* ----------------------------------------- */

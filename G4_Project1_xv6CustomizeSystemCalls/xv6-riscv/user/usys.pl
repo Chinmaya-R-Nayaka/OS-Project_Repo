@@ -46,3 +46,9 @@ entry("uptime");
 entry("hello");
 entry("getprocinfo");
 entry("getyear");
+
+# --- Bhanu's Work: Message Passing IPC ---
+# Generate assembly stubs so user programs can invoke the send/recv syscalls.
+entry("send");
+entry("recv");
+# -----------------------------------------

@@ -28,6 +28,16 @@ int uptime(void);
 int hello(void);
 int getprocinfo(void);
 int getyear(void);
+
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Send a message string to the process identified by receiver_pid.
+// Returns 0 on success, -1 if the receiver's queue is full or pid not found.
+int send(int receiver_pid, char *msg);
+// Receive (dequeue) the oldest message from the calling process's mailbox.
+// Blocks (sleeps) if the mailbox is empty until a message arrives.
+// The received string is written into buf. Returns 0 on success.
+int recv(char *buf);
+/* ----------------------------------------- */
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
