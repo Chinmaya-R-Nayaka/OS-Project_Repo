@@ -52,6 +52,13 @@ main(void)
      * arrives if the queue is empty.
      */
 
+    // Custom delay since sleep() is not available in user-space for this branch:
+    // Wait for 10 ticks using uptime() so the parent finishes its printfs first.
+    int start_time = uptime();
+    while(uptime() - start_time < 10){
+      // Busy wait
+    }
+
     /* Receive first message from the queue */
     recv(buf);
     printf("[child]  Received msg 1: %s\n", buf);

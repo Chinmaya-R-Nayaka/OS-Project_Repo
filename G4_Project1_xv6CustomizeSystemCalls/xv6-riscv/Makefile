@@ -149,11 +149,8 @@ UPROGS=\
 	$U/_testhello\
 	$U/_testproc\
         $U/_year_test\
-\
-# --- Bhanu's Work: Message Passing IPC ---
-# Add the message passing demo program to the xv6 disk image build list.
-	$U/_msgtest\
-# -----------------------------------------
+	$U/_msgtest
+
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

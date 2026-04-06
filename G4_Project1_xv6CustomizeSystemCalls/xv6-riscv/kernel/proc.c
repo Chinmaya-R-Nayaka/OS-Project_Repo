@@ -55,6 +55,10 @@ procinit(void)
       initlock(&p->lock, "proc");
       p->state = UNUSED;
       p->kstack = KSTACK((int) (p - proc));
+      /* --- Bhanu's Work: Message Passing IPC --- */
+      // Each process slot needs its own message queue lock initialized at boot.
+      initlock(&p->msglock, "msglock");
+      /* ----------------------------------------- */
   }
 }
 

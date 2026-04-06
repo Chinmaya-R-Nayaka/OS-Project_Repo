@@ -8,7 +8,6 @@
 #include "vm.h"
 
 extern struct proc proc[NPROC];
-
 uint64
 sys_exit(void)
 {
@@ -158,12 +157,14 @@ sys_send(void)
     return -1; // Bad user pointer or string too long
 
   // Walk the process table to find the target process by PID.
+  // We briefly acquire each p->lock only to safely read PID and state.
   struct proc *receiver = 0;
   for(struct proc *p = proc; p < &proc[NPROC]; p++){
     acquire(&p->lock);
     if(p->pid == receiver_pid && p->state != UNUSED){
       receiver = p;
-      break; // Keep the lock held on receiver while we write to its queue
+      release(&p->lock); // Release proc lock immediately — we use msglock below
+      break;
     }
     release(&p->lock);
   }
@@ -172,15 +173,19 @@ sys_send(void)
   if(receiver == 0)
     return -1;
 
+  // Lock the receiver's message queue using the dedicated msglock.
+  // We do NOT use receiver->lock here because sleep() acquires p->lock internally.
+  // Using p->lock here would cause a double-acquire panic in sys_recv.
+  acquire(&receiver->msglock);
+
   // Check whether the receiver's queue is full (already holds MAX_MSGS messages).
   // If full, we immediately return -1 (non-blocking fail) rather than sleeping.
   if(receiver->msg_count >= MAX_MSGS){
-    release(&receiver->lock);
+    release(&receiver->msglock);
     return -1; // Mailbox full — caller should retry or handle the failure
   }
 
   // Copy the kernel buffer into the receiver's queue at the tail position.
-  // We use memmove here because we are kernel-to-kernel (no address translation needed).
   memmove(receiver->msg_queue[receiver->msg_tail].textbox, kbuf, MSG_SIZE);
 
   // Advance the tail index with wraparound to maintain the circular structure.
@@ -189,11 +194,11 @@ sys_send(void)
   // Increment the count of unread messages in this mailbox.
   receiver->msg_count++;
 
-  // If the receiver was sleeping waiting for a message, wake it up now.
-  // We pass &receiver->msg_count as the sleep channel (same channel used in sys_recv).
+  // Wake up the receiver if it was sleeping in sys_recv waiting for messages.
+  // The wakeup channel must match the one used in sleep() inside sys_recv.
   wakeup(&receiver->msg_count);
 
-  release(&receiver->lock);
+  release(&receiver->msglock);
   return 0; // Message successfully enqueued
 }
 
@@ -218,19 +223,21 @@ sys_recv(void)
 
   struct proc *p = myproc();
 
-  // Acquire the process lock before touching the queue fields.
-  acquire(&p->lock);
+  // Lock the message queue using the dedicated msglock (NOT p->lock).
+  // KEY REASON: sleep(chan, lk) internally calls acquire(&p->lock) then release(lk).
+  // If we passed p->lock as lk, it would try to acquire p->lock twice -> panic: acquire.
+  // By using p->msglock as the condition lock, p->lock remains free for sleep() to use.
+  acquire(&p->msglock);
 
   // If there are no messages yet, sleep until sys_send wakes us up.
-  // We loop (re-check) after each wakeup to guard against spurious wakeups.
+  // We loop after each wakeup to guard against spurious wakeups.
   while(p->msg_count == 0){
-    // sleep() atomically releases p->lock, puts the process to sleep on the
-    // channel &p->msg_count, and re-acquires p->lock before returning.
-    sleep(&p->msg_count, &p->lock);
+    // sleep() atomically: acquires p->lock, releases p->msglock, sleeps.
+    // On wakeup: releases p->lock, re-acquires p->msglock.
+    sleep(&p->msg_count, &p->msglock);
   }
 
-  // At this point, msg_count > 0 and p->lock is held again.
-  // Copy the oldest message (at msg_head) into our kernel staging buffer.
+  // Dequeue the oldest message (at msg_head) into our kernel staging buffer.
   memmove(kbuf, p->msg_queue[p->msg_head].textbox, MSG_SIZE);
 
   // Advance the head index with wraparound to consume this slot.
@@ -239,14 +246,13 @@ sys_recv(void)
   // Decrement the count of unread messages.
   p->msg_count--;
 
-  release(&p->lock);
+  release(&p->msglock);
 
   // Copy the dequeued message from the kernel buffer out to the user's buffer.
-  // copyout does the kernel-to-user address translation safely.
   if(copyout(p->pagetable, uaddr, kbuf, MSG_SIZE) < 0)
-    return -1; // User-space destination pointer is invalid
+    return -1;
 
-  return 0; // Message successfully delivered to user space
+  return 0;
 }
 
 /* ----------------------------------------- */

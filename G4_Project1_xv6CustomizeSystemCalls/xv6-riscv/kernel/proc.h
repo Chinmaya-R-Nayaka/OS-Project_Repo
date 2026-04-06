@@ -123,5 +123,10 @@ struct proc {
   int msg_count;   // Number of unread messages currently in the queue (0-10)
   int msg_head;    // Index of the oldest message (next to be read by recv)
   int msg_tail;    // Index where the next sent message will be written
+  // Dedicated lock for the message queue.
+  // We CANNOT reuse p->lock here because sleep() acquires p->lock internally,
+  // which would cause a double-acquire panic if we passed p->lock as the lk arg.
+  struct spinlock msglock;
   /* ----------------------------------------- */
+
 };
