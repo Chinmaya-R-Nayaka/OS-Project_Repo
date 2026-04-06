@@ -81,6 +81,18 @@ struct trapframe {
 
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
+/* --- Bhanu's Work: Message Passing IPC --- */
+// Maximum number of messages a process can hold in its mailbox queue.
+#define MAX_MSGS 10
+// Maximum length of a single IPC message, in bytes.
+#define MSG_SIZE 128
+
+// A single message entry. Contains the message text.
+struct msg {
+  char textbox[MSG_SIZE];  // The actual message text (null-terminated string)
+};
+/* ----------------------------------------- */
+
 // Per-process state
 struct proc {
   struct spinlock lock;
@@ -104,4 +116,12 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+
+  /* --- Bhanu's Work: Message Passing IPC --- */
+  // Circular message queue mailbox embedded in every process.
+  struct msg msg_queue[MAX_MSGS]; // Array of up to 10 pending messages
+  int msg_count;   // Number of unread messages currently in the queue (0-10)
+  int msg_head;    // Index of the oldest message (next to be read by recv)
+  int msg_tail;    // Index where the next sent message will be written
+  /* ----------------------------------------- */
 };
