@@ -205,7 +205,9 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
       continue;
     if(do_free){
       uint64 pa = PTE2PA(*pte);
+      if((char*)pa != shared_mem) {
       kfree((void*)pa);
+      }
     }
     *pte = 0;
   }
@@ -308,13 +310,25 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
       continue;   // physical page hasn't been allocated
     pa = PTE2PA(*pte);
     flags = PTE_FLAGS(*pte);
-    if((mem = kalloc()) == 0)
-      goto err;
-    memmove(mem, (char*)pa, PGSIZE);
-    if(mappages(new, i, PGSIZE, (uint64)mem, flags) != 0){
-      kfree(mem);
-      goto err;
+    
+    // --- OUR NEW LOGIC STARTS HERE ---
+    if(*pte & PTE_SHM) {
+      // It is SHARED memory! 
+      // Do not allocate new memory; just map the child to the SAME physical page.
+      if(mappages(new, i, PGSIZE, pa, flags) != 0){
+        goto err;
+      }
+    } else {
+      // Normal memory - do the standard xv6 deep copy
+      if((mem = kalloc()) == 0)
+        goto err;
+      memmove(mem, (char*)pa, PGSIZE);
+      if(mappages(new, i, PGSIZE, (uint64)mem, flags) != 0){
+        kfree(mem);
+        goto err;
+      }
     }
+    // --- OUR NEW LOGIC ENDS HERE ---
   }
   return 0;
 
@@ -484,3 +498,4 @@ ismapped(pagetable_t pagetable, uint64 va)
   }
   return 0;
 }
+

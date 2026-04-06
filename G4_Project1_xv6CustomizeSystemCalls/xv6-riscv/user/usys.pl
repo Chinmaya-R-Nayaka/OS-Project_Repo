@@ -46,3 +46,5 @@ entry("uptime");
 entry("hello");
 entry("getprocinfo");
 entry("getyear");
+entry("shmget");
+entry("shmat");

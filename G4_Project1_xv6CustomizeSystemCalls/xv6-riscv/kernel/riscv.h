@@ -1,5 +1,5 @@
 #ifndef __ASSEMBLER__
-
+#define PTE_SHM (1L << 8) // Custom flag for Shared Memory
 // which hart (core) is this?
 static inline uint64
 r_mhartid()

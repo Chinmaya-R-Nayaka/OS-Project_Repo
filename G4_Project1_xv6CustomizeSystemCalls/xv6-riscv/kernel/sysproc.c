@@ -8,7 +8,7 @@
 #include "vm.h"
 
 extern struct proc proc[NPROC];
-
+char *shared_mem = 0;
 uint64
 sys_exit(void)
 {
@@ -127,4 +127,31 @@ uint64 sys_getprocinfo(void){
 }
 uint64 sys_getyear(void){
   return 2026; 
+}
+uint64 sys_shmget(void)
+{
+    if(shared_mem == 0){
+        shared_mem = kalloc();
+        if(shared_mem == 0)
+            return -1;
+    }
+    return 1;
+}
+uint64 sys_shmat(void)
+{
+    int id;
+    argint(0, &id);
+
+    if(id != 1 || shared_mem == 0)
+        return 0;
+
+    struct proc *p = myproc();
+    uint64 addr = PGROUNDUP(p->sz);
+
+    if(mappages(p->pagetable, addr, PGSIZE,
+        (uint64)shared_mem, PTE_W | PTE_R | PTE_U| PTE_SHM) < 0)
+        return 0;
+
+    p->sz += PGSIZE;
+    return addr;
 }

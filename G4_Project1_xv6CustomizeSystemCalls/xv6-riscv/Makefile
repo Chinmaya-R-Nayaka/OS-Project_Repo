@@ -149,7 +149,7 @@ UPROGS=\
 	$U/_testhello\
 	$U/_testproc\
         $U/_year_test\
-
+        $U/_shmtest
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
 

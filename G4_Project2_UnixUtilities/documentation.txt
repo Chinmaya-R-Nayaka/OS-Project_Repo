@@ -1,9 +1,17 @@
+Project Title: Implementing lightweight versions of standard UNIX commands
+
+Team Members:
+1.Chandrima Biswas
+2. 
+3.
+4. 
+5. 
+6. 
+
+Commands Implemented:
 1. custom_wc:
 
 Logic: The program opens a file using fopen() and reads it one character at a time using fgetc() until it reaches EOF (End Of File).
-
 Line Counting: Increments a counter every time the \n (newline) character is detected.
-
 Word Counting: Uses a "state" flag (in_word). If the current character is a space/tab/newline, the flag is set to 0. If it is a visible character and the flag was 0, it means a new word has started, and the counter increments.
-
 Character Counting: Simply increments for every character read.
