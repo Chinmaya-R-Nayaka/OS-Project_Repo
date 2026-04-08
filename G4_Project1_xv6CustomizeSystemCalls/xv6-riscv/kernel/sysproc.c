@@ -120,6 +120,19 @@ sys_uptime(void)
   return xticks;
 }
 
+uint64
+sys_waitpid(void)
+{
+  uint64 p; //status pointer address
+  int pid;  //target pid
+  
+  //argint fetches the first argument(pid), argaddr fetches the second(pointer)
+  argint(0,&pid);
+  argaddr(1,&p);
+    
+  return waitpid(pid,p);
+}
+
 uint64 sys_hello(void){
 	printf("Hello from kernel");
 	return 0;
