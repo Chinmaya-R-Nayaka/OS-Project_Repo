@@ -35,4 +35,7 @@
 #define SYS_shmget 28
 #define SYS_shmat  29
 
-
+#define SYS_mutex_lock    30
+#define SYS_mutex_unlock  31
+#define SYS_mutex_test_inc 32
+#define SYS_get_counter    33

@@ -7,7 +7,10 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+#include "mutex.h"
 
+extern int counter;
+extern struct mutex m;
 extern struct proc proc[NPROC];
 char *shared_mem = 0;
 uint64
@@ -290,3 +293,23 @@ uint64 sys_shmat(void)
 }
 /*----------------------------------------------------*/
 
+
+uint64 sys_mutex_lock(void){
+    mutex_acquire(&m);
+    return 0;
+}
+
+uint64 sys_mutex_unlock(void){
+    mutex_release(&m);
+    return 0;
+}
+uint64 sys_mutex_test_inc(void){
+    mutex_acquire(&m);
+    counter++;
+    mutex_release(&m);
+    return 0;
+}
+
+uint64 sys_get_counter(void){
+    return counter;
+}

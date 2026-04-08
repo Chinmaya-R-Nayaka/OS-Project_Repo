@@ -54,3 +54,7 @@ entry("send");
 entry("recv");
 # -----------------------------------------
 
+entry("mutex_lock");
+entry("mutex_unlock");
+entry("mutex_test_inc");
+entry("get_counter");

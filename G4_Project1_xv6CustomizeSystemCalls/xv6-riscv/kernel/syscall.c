@@ -114,6 +114,10 @@ extern uint64 sys_send(void);
 extern uint64 sys_recv(void);
 /* ----------------------------------------- */
 
+extern uint64 sys_mutex_lock(void);
+extern uint64 sys_mutex_unlock(void);
+extern uint64 sys_mutex_test_inc(void);
+extern uint64 sys_get_counter(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -145,6 +149,10 @@ static uint64 (*syscalls[])(void) = {
 [SYS_getyear]    sys_getyear,
 [SYS_shmget] sys_shmget,
 [SYS_shmat]  sys_shmat,
+[SYS_mutex_lock]    sys_mutex_lock,
+[SYS_mutex_unlock]  sys_mutex_unlock,
+[SYS_mutex_test_inc] sys_mutex_test_inc,
+[SYS_get_counter]    sys_get_counter,
 /* --- Bhanu's Work: Message Passing IPC --- */
 // Register the IPC system calls in the dispatch table.
 [SYS_send] sys_send,  // send a message to a target process's queue

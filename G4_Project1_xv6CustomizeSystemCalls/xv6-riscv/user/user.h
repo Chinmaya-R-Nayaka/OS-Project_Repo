@@ -45,6 +45,10 @@ int send(int receiver_pid, char *msg);
 int recv(char *buf);
 /* ----------------------------------------- */
 // ulib.c
+
+int mutex_lock(void);
+int mutex_unlock(void);
+
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
 void *memmove(void*, const void*, int);
@@ -66,4 +70,5 @@ void printf(const char*, ...) __attribute__ ((format (printf, 1, 2)));
 // umalloc.c
 void* malloc(uint);
 void free(void*);
-
+int mutex_test_inc(void);
+int get_counter(void);

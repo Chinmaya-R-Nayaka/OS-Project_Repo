@@ -10,6 +10,7 @@ OBJS = \
   $K/uart.o \
   $K/kalloc.o \
   $K/spinlock.o \
+  $K/mutex.o \
   $K/string.o \
   $K/main.o \
   $K/vm.o \
@@ -149,6 +150,7 @@ UPROGS=\
 	$U/_dorphan\
 	$U/_testhello\
 	$U/_testproc\
+	$U/_mutextest \
         $U/_year_test\
 	$U/_msgtest\
         $U/_shmtest       
