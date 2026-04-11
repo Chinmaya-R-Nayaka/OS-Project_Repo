@@ -97,7 +97,16 @@ This system call is executed in kernel mode through sys_get_counter().
 ----------------------------------------------------------------- System Calls Implemented by bhanuprakash ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+4.1 msgsend() --> System Call
+    The msgsend() system call is implemented to facilitate direct process-to-process communication in xv6. It allows a process to send a text message to a specific 
+target process using its Process ID (PID). The kernel locates the target process in the proc table and places the message into its dedicated 10-slot mailbox 
+queue. This system call demonstrates how the kernel manages cross-process data transfer while ensuring process isolation. If the target mailbox is full or 
+the PID is invalid, the call returns an error. The system call is executed in the kernel through the function sys_msgsend().
 
-4.1 msgsend() --> System Call The msgsend() system call is implemented to facilitate direct process-to-process communication in xv6. It allows a process to send a text message to a specific target process using its Process ID (PID). The kernel locates the target process in the proc table and places the message into its dedicated 10-slot mailbox queue. This system call demonstrates how the kernel manages cross-process data transfer while ensuring process isolation. If the target mailbox is full or the PID is invalid, the call returns an error. The system call is executed in the kernel through the function sys_msgsend().
 
-4.2 msgrecv() --> System Call The msgrecv() system call allows a process to retrieve the oldest unread message from its own internal mailbox. It follows a FIFO (First-In-First-Out) logic to ensure data order. A key feature of this implementation is the blocking behavior: if a process calls msgrecv() and its mailbox is empty, the process goes to sleep and waits until another process sends a message to it. Once a message arrives via msgsend(), the receiving process is woken up automatically to process the data. This provides a robust synchronization mechanism for Inter-Process Communication (IPC). The system call is executed in the kernel through the function sys_msgrecv().
+4.2 msgrecv() --> System Call
+    The msgrecv() system call allows a process to retrieve the oldest unread message from its own internal mailbox. It follows a FIFO (First-In-First-Out) 
+logic to ensure data order. A key feature of this implementation is the blocking behavior: if a process calls msgrecv() and its mailbox is empty, the 
+process goes to sleep and waits until another process sends a message to it. Once a message arrives via msgsend(), the receiving process is woken up 
+automatically to process the data. This provides a robust synchronization mechanism for Inter-Process Communication (IPC). The system call is executed 
+in the kernel through the function sys_msgrecv().
