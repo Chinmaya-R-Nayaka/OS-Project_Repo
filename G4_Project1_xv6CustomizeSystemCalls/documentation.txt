@@ -8,7 +8,6 @@ Team Members:
 5. C Bharadwaja
 6. Gunavardhan
 
-
 System Calls Implemented:
 1. getprocinfo(), sys_clone(), sys_join()
 2. shmget(), shmat()
@@ -92,16 +91,13 @@ observe the result of concurrent operations. Since the counter is modified under
 This system call is executed in kernel mode through sys_get_counter().
 
 
-
------------------------------------------------------------------ System Calls Implemented by bhanuprakash ---------------------------------------------------------------------------
+----------------------------------------------------------------- System Calls Implemented by Bhanuprakash ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 4.1 msgsend() --> System Call
     The msgsend() system call is implemented to facilitate direct process-to-process communication in xv6. It allows a process to send a text message to a specific 
 target process using its Process ID (PID). The kernel locates the target process in the proc table and places the message into its dedicated 10-slot mailbox 
 queue. This system call demonstrates how the kernel manages cross-process data transfer while ensuring process isolation. If the target mailbox is full or 
 the PID is invalid, the call returns an error. The system call is executed in the kernel through the function sys_msgsend().
-
 
 4.2 msgrecv() --> System Call
     The msgrecv() system call allows a process to retrieve the oldest unread message from its own internal mailbox. It follows a FIFO (First-In-First-Out) 
