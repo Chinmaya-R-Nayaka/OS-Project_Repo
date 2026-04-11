@@ -4,16 +4,16 @@ Team Members:
 1. Chandrima Biswas
 2. Chapineni Sujitha
 3. Chinmaya R Nayaka
-4. 
+4. Bhanuprakash 
 5. 
 6. 
 
 
 Commands Implemented:
 1. custom_wc:
-1. custom_grep:
+2. custom_grep:
 3. custom_cat:
-
+4. customfind
 
 Description:
 
@@ -44,3 +44,12 @@ Output Writing: Writes the read data directly to standard output using write() (
 Loop Execution: The read-write process continues until read() returns 0 (EOF).
 Error Handling: If read() returns a negative value, an error message is displayed.
 File Closing: After reading is complete, the file is closed using close().
+
+
+4. customfind Logic:
+    This program helps you find files or folders by their names.
+How it works: It starts in a folder and looks at every item inside one by one.
+Finding by Name: If you give it a name to search for, it checks each item. If the name matches, it prints the location on the screen.
+Recursive search (-r): If you use the -r flag, it doesn't just look in the first folder. It opens every subfolder it finds and looks inside those too.
+Case-Insensitive (-iname): This flag lets you find files even if you get the capital letters wrong (like finding "Pictures" even if you type "pictures").
+Turbo Search: To make it fast, the program uses a "tag" that is already on the file to know if it is a folder. This allows it to skip thousands of regular files very quickly.
