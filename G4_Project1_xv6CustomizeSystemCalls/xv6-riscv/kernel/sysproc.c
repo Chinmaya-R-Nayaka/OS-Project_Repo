@@ -345,8 +345,8 @@ uint64 sys_setpriority(void) {
   int pid, priority;
   
   // Grab the arguments passed by the user
-  if(argint(0, &pid) < 0 || argint(1, &priority) < 0)
-    return -1;
+  argint(0, &pid);
+  argint(1, &priority);
     
   // max priority is 10 and min is 1
   if(priority < 1) priority = 1;
