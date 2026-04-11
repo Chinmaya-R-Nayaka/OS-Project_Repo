@@ -2,8 +2,8 @@ Project Title: Implementing lightweight versions of standard UNIX commands
 
 Team Members:
 1. Chandrima Biswas
-2. 
-3.
+2. Chapineni Sujitha
+3. Chinmaya R Nayaka
 4. 
 5. 
 6. 
@@ -11,6 +11,8 @@ Team Members:
 
 Commands Implemented:
 1. custom_wc:
+1. custom_grep:
+3. custom_cat:
 
 
 Description:
@@ -22,3 +24,23 @@ Word Counting: Uses a "state" flag (in_word). If the current character is a spac
 	       If it is a visible character and the flag was 0, it means a new word has started, and the counter increments.
 Character Counting: Simply increments for every character read.
 
+
+2. custom_grep Logic:
+    The program opens a file using fopen() and reads it line by line using fgets() until it reaches EOF (End Of File).
+Pattern Matching: Uses strstr() to check whether the given pattern exists in each line.
+Case-Insensitive Search: If -i flag is used, both the line and pattern are converted to lowercase using tolower(), then matching is done.
+Line Number Printing: If -n flag is used, a counter (line_no) is maintained and printed along with each matching line.
+Matching: If a line contains the pattern, it is printed; otherwise, it is skipped.
+Output: Prints only matching lines. If -n is used, prints line_number: line.
+File Handling: If file cannot be opened, prints an error. After processing, the file is closed using fclose().
+
+
+3.  custom_cat Logic:
+    The program opens a file using open() in read-only mode and reads it in chunks using read() until it reaches EOF (End Of File).
+Argument Handling: Checks if the file name is provided. If not, prints usage message using write().
+File Opening: Uses open() system call to open the file. If it fails, prints an error using perror().
+Reading Data: Reads the file into a buffer (buffer[1024]) using read() system call.
+Output Writing: Writes the read data directly to standard output using write() (file descriptor 1).
+Loop Execution: The read-write process continues until read() returns 0 (EOF).
+Error Handling: If read() returns a negative value, an error message is displayed.
+File Closing: After reading is complete, the file is closed using close().
