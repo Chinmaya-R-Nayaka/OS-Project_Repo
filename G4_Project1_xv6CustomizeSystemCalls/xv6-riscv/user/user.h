@@ -25,10 +25,11 @@ char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
 
+// ---------------------------- Team G4 ------------------------------------
+// -------------------------------------------------------------------------
 int hello(void);
 int getprocinfo(void);
 int getyear(void);
-
 
 /*-------------------------Chandrima's Work------------------------*/
 int shmget(void);
@@ -44,10 +45,17 @@ int send(int receiver_pid, char *msg);
 // The received string is written into buf. Returns 0 on success.
 int recv(char *buf);
 /* ----------------------------------------- */
+
+int clone(void *stack);
+int join(void **stack);
+
 // ulib.c
 
 int mutex_lock(void);
 int mutex_unlock(void);
+
+// ------------------------------------------------------------------
+// ------------------------------------------------------------------
 
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);

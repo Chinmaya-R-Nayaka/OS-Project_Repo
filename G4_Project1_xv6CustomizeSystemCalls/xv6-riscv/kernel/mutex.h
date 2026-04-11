@@ -1,6 +1,5 @@
 #ifndef MUTEX_H
 #define MUTEX_H
-
 #include "spinlock.h"
 
 struct mutex {

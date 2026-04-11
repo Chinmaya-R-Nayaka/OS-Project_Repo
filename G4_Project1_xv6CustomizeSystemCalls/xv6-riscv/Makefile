@@ -153,7 +153,9 @@ UPROGS=\
 	$U/_mutextest \
         $U/_year_test\
 	$U/_msgtest\
-        $U/_shmtest       
+        $U/_shmtest\
+	$U/_testthread\
+
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

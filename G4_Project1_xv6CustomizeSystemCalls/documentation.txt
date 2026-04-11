@@ -4,39 +4,90 @@ Project Title: xv6 Custom System Calls
 Team Members:
 1. Chinmaya R Nayaka
 2. Chandrima Biswas
-3.
+3. Chapineni Sujitha
 4. 
 5. 
 6. 
 
 
 System Calls Implemented:
-1. getprocinfo()
+1. getprocinfo(), sys_clone(), sys_join()
+2. shmget(), shmat()
+3. sys_mutex_lock(), sys_mutex_unlock(), sys_mutex_test_inc(), sys_get_counter()
 
 
-Description:
-This project implements custom system calls in the xv6 operating system
-
-1. getprocinfo() --> System Call
-	The getprocinfo() system call is implemented in the xv6 operating system to retrieve information about 
-currently active processes. It accesses the kernel’s process table and displays details such as the Process ID (PID)
-and the state of each process. This system call demonstrates how user programs interact with the Kernel to obtain 
-system level information. The System Call is invoked from user program and executed in kenel through 
-function sys_getprocinfo()
 
 
-2.shmget() and shmat() 
+--------------------------------------------- Description: This project implements custom system calls in the xv6 operating system ----------------------------------------------
 
 
-Description:
-2.i. shmget() -->System Call
-        The shmget() system call acts as the allocator for a persistent physical memory segment that can be shared 
-        across the entire system. In our implementation, the kernel checks if a global physical page has already 
-        been allocated; if not, it calls kalloc() to reserve a page of RAM and returns a unique identifier 
-        to the user. 
-2.ii. shmat() -->System Call
-        The shmat() system call is responsible for "attaching" the previously allocated physical page to a specific 
+----------------------------------------------------------------- System Calls Implemented by Chinmaya --------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.1 getprocinfo() --> System Call
+	The getprocinfo() system call is implemented in the xv6 operating system to retrieve information about currently active processes. It accesses the kernel’s 
+process table and displays details such as the Process ID (PID) and the state of each process. This system call demonstrates how user programs interact with the Kernel 
+to obtain system level information. The System Call is invoked from user program and executed in kenel through function sys_getprocinfo()
+
+
+1.2 sys_clone() --> System Call
+        The sys_clone() system call is used to create a new lightweight thread within the xv6 OS Unlike fork(), which creates a completely separate process with its own
+own memory space, sys_clone() creates a child thread that shares the parent process’s address space, allowing multiple threads to work within the same memory region. In Our 
+implementation, sys_clone() internally reuses the process creation logic of fork() while marking the created entity as a thread using thread-specific metadata such as is_thread
+This allows efficient parallel execution inside a single process and forms the basis for multithreading support in xv6. The system calls invoked from user programs and forms
+the basis for multithreading support in xv6. The system call is invoked from user programs and executed in the kernel through the function sys_clone().
+
+
+1.3 sys_join() --> System Call
+	The sys_join() system call is responsible for synchronizing with a terminated thread in the xv6 operating system. It allows a parent thread or processto wait until
+one of its child threads completes execution, ensuring proper cleanup and coordination between threads. Similar to how wait() handles child processes, sys_join() manages
+thread termination and prevents zombie thread accumulation by reclaiming resources once a thread exits. In our implementation, sys_join() internally reuses the existing
+waiting mechanism while adapting it specifically for thread lifecycle management. This system call is essential for thread synchronization and is executed in kernel mode
+through the function sys_join().
+
+
+
+---------------------------------------------------------------- System Calls Implemented by Chandrima ---------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+2.1 shmget() -->System Call
+        The shmget() system call acts as the allocator for a persistent physical memory segment that can be shared
+        across the entire system. In our implementation, the kernel checks if a global physical page has already
+        been allocated; if not, it calls kalloc() to reserve a page of RAM and returns a unique identifier
+        to the user.
+
+2.2 shmat() -->System Call
+        The shmat() system call is responsible for "attaching" the previously allocated physical page to a specific
         process's virtual address space. It calculates a free virtual address at the top of the process's memory and
-        uses mappages to link that address to the shared memory physical address, notably tagging the entry with a custom 
-        PTE_SHM flag. Using the PTE_SHM flag, we modified uvmcopy so that children automatically inherit the exact same 
-        physical mapping during a fork(), allowing seamless communication. 
+        uses mappages to link that address to the shared memory physical address, notably tagging the entry with a custom
+        PTE_SHM flag. Using the PTE_SHM flag, we modified uvmcopy so that children automatically inherit the exact same
+        physical mapping during a fork(), allowing seamless communication.
+
+
+
+----------------------------------------------------------------- System Calls Implemented by Sujitha ---------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3.1 sys_mutex_lock() --> System Call
+	The sys_mutex_lock() system call is used to acquire a mutual exclusion (mutex) lock in the xv6 operating system. It ensures that only one thread or process can enter
+the critical section at a time. Internally, it invokes mutex_acquire(&m), which blocks the calling process if the lock is already held by another process, thereby preventing 
+race conditions. This system call is essential for synchronization in concurrent environments and is executed in kernel mode through the function sys_mutex_lock()
+
+
+3.2 sys_mutex_unlock() --> System Call
+	The sys_mutex_unlock() system call releases a previously acquired mutex lock. It invokes mutex_release(&m), which sets the lock state to free and wakes up any processes
+waiting on the mutex. This allows other blocked threads or processes to acquire the lock and proceed with execution. It ensures proper coordination and avoids deadlock scenarios
+when used correctly. The system call is executed in kernel mode via sys_mutex_unlock().
+
+
+3.3 sys_mutex_test_inc() --> System Call
+	The sys_mutex_test_inc() system call demonstrates the use of mutex for protecting a shared resource. It first acquires he mutex lock using mutex_acquire(&m), safely 
+increments the shared variable counter, and then releases the lock using mutex_release(&m). This guarantees that the increment operation is atomic and free from race conditions
+even when multiple threads attempt concurrent access. This system call is commonly used to test synchronization correctness and is executed through sys_mutex_test_inc().
+
+
+3.4 sys_get_counter() --> System Call
+	The sys_get_counter() system call returns the current value of the shared variable counter. It provides read access to the shared resource, allowing user programs to
+observe the result of concurrent operations. Since the counter is modified under mutex protection, the returned value reflects a consistent and correct state.
+This system call is executed in kernel mode through sys_get_counter().
+

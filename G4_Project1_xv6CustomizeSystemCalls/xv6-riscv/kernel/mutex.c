@@ -17,7 +17,6 @@ void mutex_acquire(struct mutex *m){
     }
 
     m->locked = 1;
-
     release(&m->lk);
 }
 

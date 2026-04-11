@@ -12,7 +12,13 @@
 extern int counter;
 extern struct mutex m;
 extern struct proc proc[NPROC];
+
 char *shared_mem = 0;
+
+extern uint64 sys_fork(void);
+extern uint64 sys_wait(void);
+
+
 uint64
 sys_exit(void)
 {
@@ -122,16 +128,17 @@ uint64 sys_hello(void){
 
 uint64 sys_getprocinfo(void){
 	struct proc *p;
-	
-	printf("PID\tSTATE\n");	
+
+	printf("PID\tSTATE\n");
 	for(p = proc; p < &proc[NPROC]; p++){
 		if(p->state != UNUSED) printf("%d\t%d\n", p->pid, p->state);
 	}
 	return 0;
 }
 uint64 sys_getyear(void){
-  return 2026; 
+  return 2026;
 }
+
 
 /* --- Bhanu's Work: Message Passing IPC --- */
 
@@ -294,6 +301,10 @@ uint64 sys_shmat(void)
 /*----------------------------------------------------*/
 
 
+
+// ----------------------------------------------------
+// Sujitha's Work
+// ----------------------------------------------------
 uint64 sys_mutex_lock(void){
     mutex_acquire(&m);
     return 0;
@@ -313,3 +324,20 @@ uint64 sys_mutex_test_inc(void){
 uint64 sys_get_counter(void){
     return counter;
 }
+
+
+// ----------------------------------------------------------
+// Chinmaya's Work
+// ----------------------------------------------------------
+// For threads
+uint64 sys_clone(void){
+    return sys_fork();   // use existing stable syscall
+}
+
+uint64 sys_join(void){
+    return sys_wait();  // use existing stable syscall
+}
+
+// -----------------------------------------------------------
+
+

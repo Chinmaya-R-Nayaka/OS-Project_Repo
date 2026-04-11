@@ -22,10 +22,11 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 
+// -------------------- Team G4 ---------------------
+// --------------------------------------------------
 #define SYS_hello 23
 #define SYS_getprocinfo 24
 #define SYS_getyear  25
-
 /* --- Bhanu's Work: Message Passing IPC --- */
 // Syscall number for sending a message to another process's mailbox queue.
 #define SYS_send 26
@@ -34,8 +35,12 @@
 /* ----------------------------------------- */
 #define SYS_shmget 28
 #define SYS_shmat  29
-
 #define SYS_mutex_lock    30
 #define SYS_mutex_unlock  31
 #define SYS_mutex_test_inc 32
 #define SYS_get_counter    33
+#define SYS_clone 25
+#define SYS_join 26
+
+// -----------------------------------------------------
+// -----------------------------------------------------

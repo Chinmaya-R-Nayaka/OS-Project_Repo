@@ -103,6 +103,9 @@ extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 
+
+// --------------- Team G4 -------------------------
+// -------------------------------------------------
 extern uint64 sys_hello(void);
 extern uint64 sys_getprocinfo(void);
 extern uint64 sys_getyear(void);
@@ -118,6 +121,11 @@ extern uint64 sys_mutex_lock(void);
 extern uint64 sys_mutex_unlock(void);
 extern uint64 sys_mutex_test_inc(void);
 extern uint64 sys_get_counter(void);
+extern uint64 sys_clone(void);
+extern uint64 sys_join(void);
+// -----------------------------------------------------
+// -----------------------------------------------------
+
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -144,6 +152,8 @@ static uint64 (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 
+// ---------------Team G4 Sys Calls -----------------
+// --------------------------------------------------
 [SYS_hello] sys_hello,
 [SYS_getprocinfo] sys_getprocinfo,
 [SYS_getyear]    sys_getyear,
@@ -158,6 +168,12 @@ static uint64 (*syscalls[])(void) = {
 [SYS_send] sys_send,  // send a message to a target process's queue
 [SYS_recv] sys_recv,  // receive (dequeue) a message from own mailbox
 /* ----------------------------------------- */
+
+[SYS_clone] sys_clone,
+[SYS_join] sys_join,
+
+// -----------------------------------------------------
+// -----------------------------------------------------
 };
 
 void

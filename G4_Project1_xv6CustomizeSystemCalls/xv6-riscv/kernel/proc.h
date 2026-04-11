@@ -129,4 +129,17 @@ struct proc {
   struct spinlock msglock;
   /* ----------------------------------------- */
 
+  // ------------ Chinmaya's Work ------------------
+  int is_thread;
+  uint64 stack;
+  // ----------------------------------
+
 };
+
+// ----------------------------------------------
+// Chinmaya's Work
+// ----------------------------------------------
+// Process Related info
+int fork(void);
+int wait(uint64);
+

@@ -43,6 +43,8 @@ entry("sbrk");
 entry("pause");
 entry("uptime");
 
+# ------------------------- Team G4 Work starts from here ----------------------
+# ------------------------------------------------------------------------------ 
 entry("hello");
 entry("getprocinfo");
 entry("getyear");
@@ -58,3 +60,8 @@ entry("mutex_lock");
 entry("mutex_unlock");
 entry("mutex_test_inc");
 entry("get_counter");
+entry("clone");
+entry("join");
+
+# --------------------------------- End Here ------------------------------------
+# -------------------------------------------------------------------------------
