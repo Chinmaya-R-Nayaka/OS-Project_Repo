@@ -5,7 +5,7 @@ Team Members:
 1. Chinmaya R Nayaka
 2. Chandrima Biswas
 3. Chapineni Sujitha
-4. 
+4. Bhanuprakash 
 5. 
 6. 
 
@@ -14,6 +14,7 @@ System Calls Implemented:
 1. getprocinfo(), sys_clone(), sys_join()
 2. shmget(), shmat()
 3. sys_mutex_lock(), sys_mutex_unlock(), sys_mutex_test_inc(), sys_get_counter()
+4. msgsend(), msgrecv()
 
 
 
