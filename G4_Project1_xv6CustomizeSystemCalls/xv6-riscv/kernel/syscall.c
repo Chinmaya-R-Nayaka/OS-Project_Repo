@@ -123,6 +123,11 @@ extern uint64 sys_mutex_test_inc(void);
 extern uint64 sys_get_counter(void);
 extern uint64 sys_clone(void);
 extern uint64 sys_join(void);
+/*   Guna's work -- */
+extern uint64 sys_setpriority(void);
+/*   --   */
+
+
 // -----------------------------------------------------
 // -----------------------------------------------------
 
@@ -168,6 +173,10 @@ static uint64 (*syscalls[])(void) = {
 [SYS_send] sys_send,  // send a message to a target process's queue
 [SYS_recv] sys_recv,  // receive (dequeue) a message from own mailbox
 /* ----------------------------------------- */
+
+/*   GUna's work -- */
+[SYS_setpriority]   sys_setpriority,
+/*     --  */
 
 [SYS_clone] sys_clone,
 [SYS_join] sys_join,

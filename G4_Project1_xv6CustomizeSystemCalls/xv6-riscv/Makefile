@@ -155,7 +155,7 @@ UPROGS=\
 	$U/_msgtest\
         $U/_shmtest\
 	$U/_testthread\
-
+        $U/_guna_test\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

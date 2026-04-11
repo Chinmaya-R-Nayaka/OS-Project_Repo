@@ -129,7 +129,9 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
-
+  /*  -- Guna's work */
+  p->priority = 5;
+  /*     -----    */
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
     freeproc(p);
@@ -449,35 +451,32 @@ scheduler(void)
 
   c->proc = 0;
   for(;;){
-    // The most recent process to run may have had interrupts
-    // turned off; enable them to avoid a deadlock if all
-    // processes are waiting. Then turn them back off
-    // to avoid a possible race between an interrupt
-    // and wfi.
     intr_on();
-    intr_off();
+    
+    struct proc *highest_p = 0;
+    int highest_pri = -1;
 
-    int found = 0;
+    // PASS 1: Look at every process and find the RUNNABLE one with the highest priority
     for(p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
-      if(p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
-
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-        found = 1;
+      if(p->state == RUNNABLE && p->priority > highest_pri) {
+        highest_pri = p->priority;
+        highest_p = p;
       }
       release(&p->lock);
     }
-    if(found == 0) {
-      // nothing to run; stop running on this core until an interrupt.
-      asm volatile("wfi");
+
+    // PASS 2: If we found a high-priority process, run it!
+    if(highest_p != 0) {
+      acquire(&highest_p->lock);
+      // Double check it didn't change state while we were unlocked
+      if(highest_p->state == RUNNABLE) { 
+        highest_p->state = RUNNING;
+        c->proc = highest_p;
+        swtch(&c->context, &highest_p->context);
+        c->proc = 0;
+      }
+      release(&highest_p->lock);
     }
   }
 }
@@ -709,4 +708,20 @@ procdump(void)
   }
 }
 
+/*  Guna's work*/
+int change_priority(int pid, int priority) {
+  struct proc *p;
+  for(p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
+    if(p->pid == pid) {
+      p->priority = priority;
+      release(&p->lock);
+      return 0; // Success
+    }
+    release(&p->lock);
+  }
+  return -1; // Process not found
+}
+
+/*   ----- */
 

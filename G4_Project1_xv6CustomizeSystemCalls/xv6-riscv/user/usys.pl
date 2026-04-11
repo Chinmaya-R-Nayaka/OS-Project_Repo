@@ -56,6 +56,10 @@ entry("send");
 entry("recv");
 # -----------------------------------------
 
+# Guna's work
+entry("setpriority");
+# ----
+
 entry("mutex_lock");
 entry("mutex_unlock");
 entry("mutex_test_inc");

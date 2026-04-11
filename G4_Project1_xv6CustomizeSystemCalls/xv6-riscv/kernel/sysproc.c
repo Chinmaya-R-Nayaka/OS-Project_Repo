@@ -340,4 +340,23 @@ uint64 sys_join(void){
 
 // -----------------------------------------------------------
 
+/*  Guna's work   */
+uint64 sys_setpriority(void) {
+  int pid, priority;
+  
+  // Grab the arguments passed by the user
+  argint(0, &pid);
+  argint(1, &priority);
+    
+  // max priority is 10 and min is 1
+  if(priority < 1) priority = 1;
+  if(priority > 10) priority = 10;
+
+  // We will call a helper function to safely modify the process table
+  extern int change_priority(int, int);
+  return change_priority(pid, priority);
+}
+/* End of Guna's work*/
+
+// ----------------------------------------------------------
 
