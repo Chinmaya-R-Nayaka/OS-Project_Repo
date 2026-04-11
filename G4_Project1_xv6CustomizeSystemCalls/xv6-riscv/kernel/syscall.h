@@ -43,8 +43,8 @@
 #define SYS_mutex_unlock  31
 #define SYS_mutex_test_inc 32
 #define SYS_get_counter    33
-#define SYS_clone 25
-#define SYS_join 26
+#define SYS_clone 34
+#define SYS_join 35
 
 // -----------------------------------------------------
 // -----------------------------------------------------
