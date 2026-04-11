@@ -129,7 +129,9 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
-
+  /*  -- Guna's work */
+  p->priority = 5;
+  /*     -----    */
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
     freeproc(p);
@@ -709,4 +711,20 @@ procdump(void)
   }
 }
 
+/*  Guna's work*/
+int change_priority(int pid, int priority) {
+  struct proc *p;
+  for(p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
+    if(p->pid == pid) {
+      p->priority = priority;
+      release(&p->lock);
+      return 0; // Success
+    }
+    release(&p->lock);
+  }
+  return -1; // Process not found
+}
+
+/*   ----- */
 

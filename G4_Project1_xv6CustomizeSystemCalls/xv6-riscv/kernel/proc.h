@@ -133,8 +133,11 @@ struct proc {
   int is_thread;
   uint64 stack;
   // ----------------------------------
-
-};
+  // Gunavardhan's work 
+  int priority;
+  // -------
+  
+ };
 
 // ----------------------------------------------
 // Chinmaya's Work

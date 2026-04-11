@@ -46,6 +46,10 @@ int send(int receiver_pid, char *msg);
 int recv(char *buf);
 /* ----------------------------------------- */
 
+/*  Gunavardhan's work */
+int setpriority(int, int);
+/*  ----      */
+
 int clone(void *stack);
 int join(void **stack);
 
