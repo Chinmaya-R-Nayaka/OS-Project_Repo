@@ -1,17 +1,30 @@
 #include "kernel/types.h"
-#include "kernel/stat.h"
 #include "user/user.h"
 
+
+void heavy_work() {
+  for (volatile int i = 0; i < 100000000; i++) {
+      // The 'volatile' keyword prevents the compiler 
+  }
+}
 int main() {
-    int pid = getpid();
-    printf("Starting priority test...\n");
-    
-    // Change my own priority to maximum (10)
-    if(setpriority(pid, 10) == 0) {
-        printf("Successfully set priority of process %d to 10!\n", pid);
-    } else {
-        printf("Failed to set priority.\n");
+  int pid;
+
+  for (int i = 1; i <= 3; i++) {
+    pid = fork();
+    if (pid == 0) { // Child
+      int pri = i * 3; // Priorities: 3, 6, 9
+      setpriority(getpid(), pri);
+      printf("Child %d started with priority %d\n", getpid(), pri);
+      
+       heavy_work(); // Just to waste time
+      
+      printf("Child %d (Priority %d) FINISHED\n", getpid(), pri);
+      exit(0);
     }
-    
-    exit(0);
+  }
+
+  for (int i = 0; i < 3; i++) wait(0);
+  printf("Test complete.\n");
+  exit(0);
 }
