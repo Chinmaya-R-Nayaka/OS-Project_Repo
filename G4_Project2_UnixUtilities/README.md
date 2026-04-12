@@ -82,7 +82,7 @@ custom_grep -n pattern file.txt
 
 ---
 
-### 4 custom_find
+### 4 customfind
 
 Searches for files/directories by name.
 
@@ -100,9 +100,9 @@ Searches for files/directories by name.
 #### Usage:
 
 ```bash
-custom_find filename
-custom_find -r filename
-custom_find -iname filename
+customfind filename
+customfind -r filename
+customfind -iname filename
 ```
 
 ---
@@ -123,6 +123,8 @@ Moves or renames files.
 
 ```bash
 custom_mv source.txt destination.txt
+custom_mv source.txt target_folder
+custom_mv source_folder target_folder
 ```
 
 ---
@@ -240,9 +242,9 @@ This project demonstrates how fundamental Unix commands work internally and prov
 
 ## Authors
 
-**Buri Gunavardhan**
-**C Bharadwaja**
-**Chamalla Bhanu Prakash**
-**Chandrima Biswas**
-**Chapineni Sujitha**
-**Chinmaya R Nayaka**
+1. **Buri Gunavardhan** (24JE0601)
+2. **C Bharadwaja** (24JE0602)
+3. **Chamalla Bhanu Prakash** (24JE0603)
+4. **Chandrima Biswas** (24JE0604)
+5. **Chapineni Sujitha** (24JE0605)
+6. **Chinmaya R Nayaka** (24JE0606)
