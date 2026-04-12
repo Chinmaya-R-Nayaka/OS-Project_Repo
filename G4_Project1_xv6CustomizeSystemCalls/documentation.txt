@@ -1,4 +1,3 @@
-
 Project Title: xv6 Custom System Calls
 
 Team Members:
@@ -6,8 +5,8 @@ Team Members:
 2. Chandrima Biswas
 3. Chapineni Sujitha
 4. Bhanuprakash 
-5. 
-6. 
+5. C Bharadwaja
+6. Gunavardhan
 
 
 System Calls Implemented:
@@ -15,8 +14,8 @@ System Calls Implemented:
 2. shmget(), shmat()
 3. sys_mutex_lock(), sys_mutex_unlock(), sys_mutex_test_inc(), sys_get_counter()
 4. msgsend(), msgrecv()
-
-
+5. waitpid()
+6. setpriority() 
 
 
 --------------------------------------------- Description: This project implements custom system calls in the xv6 operating system ----------------------------------------------
@@ -110,3 +109,25 @@ logic to ensure data order. A key feature of this implementation is the blocking
 process goes to sleep and waits until another process sends a message to it. Once a message arrives via msgsend(), the receiving process is woken up 
 automatically to process the data. This provides a robust synchronization mechanism for Inter-Process Communication (IPC). The system call is executed 
 in the kernel through the function sys_msgrecv().
+
+
+----------------------------------------------------------------- System Calls Implemented by C Bharadwaja ----------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5 waitpid() --> System Call
+        The waitpid() system call is implemented to provide targeted synchronization between parent and child processes in the xv6 operating system. 
+Unlike the standard wait() call that rigidly suspends a parent until any of its children terminate, waitpid() allows a parent to wait for a specific child process to complete
+by providing its exact Process ID (PID). In our implementation, the system call accepts three parameters (a target PID, a status pointer, and options) and safely handles
+a target PID of -1 to seamlessly replicate the traditional behavior of waiting for any child to exit. Internally, waitpid() scans the process table to locate the specifically
+targeted child, adapting the existing zombie cleanup and sleeping mechanisms while ensuring the child's exit status is properly copied back to the user's memory space.
+This system call provides essential, fine-grained control over process lifecycles and is executed in the kernel through the function sys_waitpid().
+
+
+----------------------------------------------------------------- System Calls Implemented by Gunavardhan----------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6 setpriority() --> System Call
+        The setpriority() system call was implemented to provide a mechanism for user-level processes to influence their own scheduling importance. By accepting a Target PID 
+and a Priority Value as arguments, the kernel can transition from a fixed scheduling model to a dynamic, user-defined one. The system call executes within the kernel through 
+the sys_setpriority() function, which performs a lookup in the global process table to validate the target PID before updating the process's internal priority field. 
+This implementation ensures that priority changes are applied safely and immediately, allowing the scheduler to re-evaluate the process's standing in the next scheduling cycle.
