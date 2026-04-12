@@ -45,6 +45,8 @@ entry("uptime");
 
 # ------------------------- Team G4 Work starts from here ----------------------
 # ------------------------------------------------------------------------------ 
+entry("waitpid");
+
 entry("hello");
 entry("getprocinfo");
 entry("getyear");

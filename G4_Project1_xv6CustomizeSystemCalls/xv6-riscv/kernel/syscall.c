@@ -106,6 +106,8 @@ extern uint64 sys_close(void);
 
 // --------------- Team G4 -------------------------
 // -------------------------------------------------
+extern uint64 sys_waitpid(void);
+
 extern uint64 sys_hello(void);
 extern uint64 sys_getprocinfo(void);
 extern uint64 sys_getyear(void);
@@ -159,6 +161,8 @@ static uint64 (*syscalls[])(void) = {
 
 // ---------------Team G4 Sys Calls -----------------
 // --------------------------------------------------
+[SYS_waitpid]   sys_waitpid,
+
 [SYS_hello] sys_hello,
 [SYS_getprocinfo] sys_getprocinfo,
 [SYS_getyear]    sys_getyear,
