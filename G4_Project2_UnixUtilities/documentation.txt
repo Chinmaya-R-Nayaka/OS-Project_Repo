@@ -5,8 +5,8 @@ Team Members:
 2. Chapineni Sujitha
 3. Chinmaya R Nayaka
 4. Bhanuprakash 
-5. 
-6. 
+5. C Bharadwaja
+6. Gunavardhan
 
 
 Commands Implemented:
@@ -14,6 +14,8 @@ Commands Implemented:
 2. custom_grep:
 3. custom_cat:
 4. customfind
+5. custom_mv
+6. custom_ls
 
 Description:
 
@@ -53,3 +55,23 @@ Finding by Name: If you give it a name to search for, it checks each item. If th
 Recursive search (-r): If you use the -r flag, it doesn't just look in the first folder. It opens every subfolder it finds and looks inside those too.
 Case-Insensitive (-iname): This flag lets you find files even if you get the capital letters wrong (like finding "Pictures" even if you type "pictures").
 Turbo Search: To make it fast, the program uses a "tag" that is already on the file to know if it is a folder. This allows it to skip thousands of regular files very quickly.
+
+5. custom_mv Logic:
+    The program determines whether to move a file into a directory or rename it, and then executes the operation using the rename() system call.
+Argument Handling: Checks if exactly two arguments (source and destination) are provided. If not, it prints a usage message to standard error and exits.
+Destination Checking: Uses the stat() function and the S_ISDIR macro to inspect the destination. This determines if the target is an existing directory or a new file name.
+Path Construction: If the destination is a directory, it extracts the original filename from the source using basename() and constructs the final path (e.g., dest_dir/source_file) using snprintf(). 
+If the destination is not a directory, it treats the destination string as the new filename.
+Execution: Calls the rename() system call to perform the actual move or rename operation at the filesystem level.
+Error Handling: If rename() fails (e.g., source file doesn't exist, permission denied), it prints a descriptive error using perror().
+
+6. custom_ls Logic:
+    The program opens a directory stream using opendir() and reads its contents entry by entry using readdir() until it has listed all the files, explicitly skipping hidden files.
+Argument Handling: Checks the argument count (argc). If a specific directory path is provided, it uses that path (argv[1]). If no argument is provided, it defaults to the current working directory (".").
+Directory Opening: Uses the opendir() function to open a directory stream. If it fails (e.g., the directory does not exist or permission is denied), it prints an error using perror().
+Reading Data: Reads the directory contents one entry at a time using the readdir() function. Each call returns a pointer to a dirent structure, which contains the file's name (d_name).
+Filtering (Hidden Files): Before printing, it checks the first character of the file name. If it starts with a dot (.), the loop uses continue to skip it, mimicking the default behavior of the standard ls command.
+Output Writing: Prints the name of each valid file and directory to standard output using printf(), separated by spaces (or newlines).
+Loop Execution: The reading and printing process continues inside a while loop until readdir() returns NULL, which indicates the end of the directory stream.
+Error Handling: If opendir() returns NULL at the start, an error message is displayed and the program exits with a status of 1.
+Directory Closing: After reading is complete, the directory stream is safely closed using closedir() to free up system resources.
