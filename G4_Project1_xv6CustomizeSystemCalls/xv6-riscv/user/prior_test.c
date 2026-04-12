@@ -13,7 +13,7 @@ int main() {
   for (int i = 1; i <= 3; i++) {
     pid = fork();
     if (pid == 0) { // Child
-      int pri = i * 3; // Priorities: 3, 6, 9
+      int pri = (4-i) * 3; // Priorities: 9, 6, 3
       setpriority(getpid(), pri);
       printf("Child %d started with priority %d\n", getpid(), pri);
       
