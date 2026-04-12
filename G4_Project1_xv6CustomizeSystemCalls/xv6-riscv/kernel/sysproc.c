@@ -123,14 +123,16 @@ sys_uptime(void)
 uint64
 sys_waitpid(void)
 {
-  uint64 p; //status pointer address
-  int pid;  //target pid
-  
-  //argint fetches the first argument(pid), argaddr fetches the second(pointer)
-  argint(0,&pid);
-  argaddr(1,&p);
-    
-  return waitpid(pid,p);
+  int pid, options;
+  uint64 status; // User virtual address for the status pointer
+
+  // Extract the 3 arguments: (int pid, int* status, int options)
+  argint(0, &pid);
+  argaddr(1, &status);
+  argint(2, &options);
+
+  // Call the core kernel function
+  return waitpid(pid, status, options);
 }
 
 uint64 sys_hello(void){

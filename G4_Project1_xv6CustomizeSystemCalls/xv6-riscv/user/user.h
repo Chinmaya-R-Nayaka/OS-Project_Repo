@@ -25,8 +25,13 @@ char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
 
+<<<<<<< HEAD
 // ---------------------------- Team G4 ------------------------------------
 // -------------------------------------------------------------------------
+=======
+int waitpid(int, int*, int);
+
+>>>>>>> aea824c (test: add waitpidtest program)
 int hello(void);
 int getprocinfo(void);
 int getyear(void);

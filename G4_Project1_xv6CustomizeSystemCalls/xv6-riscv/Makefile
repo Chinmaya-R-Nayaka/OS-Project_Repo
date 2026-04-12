@@ -148,6 +148,7 @@ UPROGS=\
 	$U/_logstress\
 	$U/_forphan\
 	$U/_dorphan\
+	$U/_waitpidtest\
 	$U/_testhello\
 	$U/_testproc\
 	$U/_mutextest \

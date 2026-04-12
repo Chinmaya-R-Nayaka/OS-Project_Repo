@@ -439,48 +439,61 @@ kwait(uint64 addr)
 // Wait for a specific child process to exit and return its pid.
 // Return -1 if this process has no such child.
 int
-waitpid(int pid, uint64 addr)
+waitpid(int target_pid, uint64 addr, int options)
 {
   struct proc *np;
-  int havekids, ppid;
+  int havekids, pid;
   struct proc *p = myproc();
 
   acquire(&wait_lock);
 
   for(;;){
-    // Scan through table looking for targeted exited children.
     havekids = 0;
+    // Scan through the process table
     for(np = proc; np < &proc[NPROC]; np++){
-      // Condition strictly checks for the specific child PID
-      if(np->parent == p && np->pid == pid){
-        havekids = 1;
+      // Check if the current process is the parent of np
+      if(np->parent == p){
+        // If a specific PID is requested (not -1) and it doesn't match, skip it
+        if(target_pid != -1 && np->pid != target_pid)
+          continue;
+
         acquire(&np->lock);
+        havekids = 1;
+        
+        // If the child has exited
         if(np->state == ZOMBIE){
-          // Found the target zombie child
-          ppid = np->pid;
+          pid = np->pid;
+          // Copy the exit status to the user-provided address
           if(addr != 0 && copyout(p->pagetable, addr, (char *)&np->xstate,
                                   sizeof(np->xstate)) < 0) {
             release(&np->lock);
             release(&wait_lock);
             return -1;
           }
+          // Clean up the process
           freeproc(np);
           release(&np->lock);
           release(&wait_lock);
-          return ppid;
+          return pid;
         }
         release(&np->lock);
       }
     }
 
-    // No target child found or parent killed.
-    if(!havekids || p->killed){
+    // Return -1 if we have no children that match the criteria
+    if(!havekids || killed(p)){
       release(&wait_lock);
       return -1;
     }
-    
-    // Wait for a child to exit.
-    sleep(p, &wait_lock);
+
+    // Optional: If options == 1 (WNOHANG), return 0 immediately instead of blocking
+    if(options == 1){
+      release(&wait_lock);
+      return 0;
+    }
+
+    // Block and wait for a child to change state
+    sleep(p, &wait_lock); 
   }
 }
 

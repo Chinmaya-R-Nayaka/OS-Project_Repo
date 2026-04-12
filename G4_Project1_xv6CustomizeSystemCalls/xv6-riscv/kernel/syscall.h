@@ -1,4 +1,3 @@
-
 // System call numbers
 #define SYS_fork    1
 #define SYS_exit    2
@@ -22,12 +21,15 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 
+<<<<<<< HEAD
 // -------------------- Team G4 ---------------------
 // --------------------------------------------------
 
 /* Guna's work --*/
 #define SYS_setpriority  22
 /*  --  */
+=======
+>>>>>>> aea824c (test: add waitpidtest program)
 #define SYS_hello 23
 #define SYS_getprocinfo 24
 #define SYS_getyear  25
@@ -46,5 +48,9 @@
 #define SYS_clone 34
 #define SYS_join 35
 
+<<<<<<< HEAD
 // -----------------------------------------------------
 // -----------------------------------------------------
+=======
+#define SYS_waitpid  36
+>>>>>>> aea824c (test: add waitpidtest program)
